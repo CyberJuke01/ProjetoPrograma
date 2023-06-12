@@ -13,36 +13,64 @@ public class Programa {
 		Integer menu = 0;
 		Produtos[] prod = new Produtos[50];
 		Integer cadastrados = 0;
+		Boolean isInteger = false;
 
 		do {
 			System.out.println("Digite a opcao:");
 			System.out.println("|--------------------------------------|");
 			System.out.printf("1.Cadastrar produto%n2.Alterar quantidade do produto%n3.Lista de Produtos%n9.Sair%n");
 			System.out.println("|--------------------------------------|");
-			menu = sc.nextInt();
-			sc.nextLine();
+			do { // Tratamento de InputMismatch
+				try {
+					menu = sc.nextInt();
+					sc.nextLine();
+					isInteger = true;
+				} catch (InputMismatchException e) {
+					System.out.println("Tipo de valor incorreto!");
+					isInteger = false;
+					sc.nextLine();
+				}
+			} while (!isInteger);
 			switch (menu) {
 			case 1:
 				String nome;
-				Integer quantidade;
-				Double preco;
+				Integer quantidade = 0;
+				Double preco = 0.0;
 				Boolean confirma = null;
 				do {
 					System.out.println("Nome do produto:");
 					nome = sc.nextLine();
-					System.out.println("Quantidade em estoque:");
-					quantidade = sc.nextInt();
-					System.out.println("Preco do produto:");
-					preco = sc.nextDouble();
-					sc.nextLine();
+					do {
+						try {
+							System.out.println("Quantidade em estoque:");
+							quantidade = sc.nextInt();
+							sc.nextLine();
+							isInteger = true;
+						} catch (InputMismatchException e) {
+							System.out.println("Tipo de valor incorreto!\n");
+							sc.nextLine();
+							isInteger = false;
+						}
+					} while (!isInteger);
+					do {
+						try {
+							System.out.println("Preco do produto:");
+							preco = sc.nextDouble();
+							sc.nextLine();
+							isInteger = true;
+						} catch (InputMismatchException e) {
+							System.out.println("Tipo de valor incorreto!\n");
+							sc.nextLine();
+							isInteger = false;
+						}
+					} while (!isInteger);
 					do {
 						System.out.printf("Confirma a criacao do produto: %s, %d unid., R$%.2f?(S/N)? ", nome,
 								quantidade, preco);
 						String a = sc.nextLine();
 						if (a.equalsIgnoreCase("s")) {
 							confirma = true;
-						}
-						else if (a.equalsIgnoreCase("n")) {
+						} else if (a.equalsIgnoreCase("n")) {
 							confirma = false;
 						} else {
 							System.out.println("Opcao invalida!\n");
@@ -74,8 +102,8 @@ public class Programa {
 						if (a.equalsIgnoreCase("s")) {
 							Boolean ioError = null;
 							confirma2 = true;
-							do { //Loop caso haja input mismatch
-								try { //Teste de tratamento de exceção input mismatch
+							do { // Loop caso haja input mismatch
+								try { // Teste de tratamento de exceção input mismatch
 									System.out.printf("1.Adicionar quantidade%n2.Remover quantidade%n");
 									addOuRmv = sc.nextInt();
 									ioError = false;
@@ -86,11 +114,12 @@ public class Programa {
 							} while (ioError == true);
 							if (addOuRmv == 1) {
 								System.out.println("Digite a quantidade a adicionar: ");
-								prod[idPesquisa-1].addQuantity(sc.nextInt()); //Finalmente adicionar quantidade
+								prod[idPesquisa - 1].addQuantity(sc.nextInt()); // Finalmente adicionar quantidade
 								System.out.println("Quantidade adicionada!");
-							} if (addOuRmv == 2) {
+							}
+							if (addOuRmv == 2) {
 								System.out.println("Digite a quantidade a remover: ");
-								prod[idPesquisa-1].removeQuantity(sc.nextInt()); //Finalmente remover quantidade
+								prod[idPesquisa - 1].removeQuantity(sc.nextInt()); // Finalmente remover quantidade
 								System.out.println("Quantidade removida!");
 							}
 						}
